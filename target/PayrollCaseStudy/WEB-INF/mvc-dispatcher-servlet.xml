@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.springapp.mvc"/>
+
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+
+    <mvc:annotation-driven />
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <util:constant static-field="com.payroll.Employee.ZERO" id="ZERO"/>
+
+    <util:map id="employees" key-type="java.lang.Integer" value-type="com.payroll.Employee">
+        <entry key-ref="ZERO" value-ref="employeeZero"/>
+    </util:map>
+
+    <bean id="employeeZero" class="com.payroll.Employee">
+        <constructor-arg type="java.lang.Integer" value="0"></constructor-arg>
+        <constructor-arg type="java.lang.String" value="zero"></constructor-arg>
+        <constructor-arg type="java.lang.String" value="nothing"></constructor-arg>
+    </bean>
+
+    <bean id="payrollDB" class="com.payroll.PayrollDB">
+        <constructor-arg type="java.util.Map" ref="employees"/>
+    </bean>
+
+</beans>
